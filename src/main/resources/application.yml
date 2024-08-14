@@ -20,3 +20,6 @@ logging:
       hibernate:
         SQL: debug
         type: trace
+jwt:
+  header: Auth
+  secret: ${JWT_SECRET}
