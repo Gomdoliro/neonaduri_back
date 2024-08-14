@@ -24,8 +24,6 @@ public class Member {
     @Column(unique = true, nullable = false)
     private String name;
 
-    private String phone;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 }

@@ -29,7 +29,6 @@ public class MemberController {
                 .email(user.get("email"))
                 .password(passwordEncoder.encode(user.get("password")))
                 .name(user.get("name"))
-                .phone(user.get("phone"))
                 .role(Role.ROLE_USER)
                 .build()).getId();
     }
