@@ -19,9 +19,11 @@ public class Member {
 
     @Column(length = 100, unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String password;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
