@@ -6,10 +6,7 @@ import gomdoliro.neonaduri.domain.MemberRepository;
 import gomdoliro.neonaduri.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -44,4 +41,34 @@ public class MemberController {
 
         return jwtTokenProvider.createToken(member.getEmail(), member.getRole());
     }
+
+    // 회원정보 수정
+    @PutMapping("/update")
+    public UUID update(@RequestBody Map<String, String> user) {
+        //Member member = memberRepository.findByEmail(user.get("email")).get();
+
+        Member member = memberRepository.findByEmail(user.get("email"))
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
+
+        Member.MemberBuilder memberBuilder = member.toBuilder();
+
+        // 새로운 비밀번호가 입력됐을 때 업데이트
+        if (user.containsKey("password") && user.get("password") != null) {
+            memberBuilder.password(passwordEncoder.encode(user.get("password")));
+        }
+
+        // 새로운 이름이 입력됐을 때 업데이트
+        if (user.containsKey("name") && user.get("name") != null) {
+            memberBuilder.name(user.get("name"));
+        }
+
+        Member updatedMember = memberBuilder.build();
+        memberRepository.save(updatedMember);
+
+        return updatedMember.getId();
+    }
+
+
+
+
 }
